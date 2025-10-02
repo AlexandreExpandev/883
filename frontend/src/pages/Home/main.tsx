@@ -13,7 +13,24 @@ export const HomePage = () => {
   const { value, status, isFinalCount, isLoading, isMutating, start, pause, reset } = useCounter();
 
   const isRunning = status === 'running';
+  const isPaused = status === 'paused';
   const isFinished = isFinalCount;
+
+  const handlePrimaryAction = () => {
+    if (isRunning) {
+      pause();
+    } else {
+      // This handles 'paused', 'stopped', and 'finished' states.
+      // The button is disabled for 'finished', so this won't be called in that state.
+      start();
+    }
+  };
+
+  const getPrimaryButtonLabel = () => {
+    if (isRunning) return 'Pausar';
+    if (isPaused) return 'Retomar';
+    return 'Iniciar';
+  };
 
   return (
     <div className="container mx-auto p-4 text-center">
@@ -21,31 +38,28 @@ export const HomePage = () => {
       <div className="my-8">
         <p className="text-lg mb-2">Número Atual:</p>
         {/* Feature [ID: 2] Exibir Número Atual */}
-        {/* Feature Component [ID: FC-001] & [ID: FC-002] */}
         <div
-          className={cn('text-9xl font-bold transition-colors duration-300 font-roboto', {
-            'text-blue-600': !isFinalCount,
-            'text-green-500': isFinalCount, // Destaque Visual de Finalização
+          className={cn('text-9xl font-bold transition-colors duration-300', {
+            'text-blue-600': !isFinished,
+            'text-green-500': isFinished, // Destaque Visual de Finalização
           })}
         >
           {isLoading ? '...' : value}
         </div>
       </div>
       <div className="space-x-4">
-        {/* Feature [ID: 1] Iniciar Contagem */}
-        <Button onClick={start} disabled={isRunning || isFinished || isMutating}>
-          {status === 'paused' && value > 0 && value < 10 ? 'Continuar' : 'Iniciar'}
-        </Button>
-        {/* Feature [ID: 3] Pausar Contagem */}
+        {/* Feature [ID: 1, 3] Iniciar/Pausar/Retomar Contagem */}
         <Button
-          onClick={pause}
-          disabled={!isRunning || isFinished || isMutating}
-          variant="secondary"
+          onClick={handlePrimaryAction}
+          disabled={isFinished || isMutating}
+          variant={isRunning ? 'secondary' : 'default'}
+          size="lg"
         >
-          Pausar
+          {getPrimaryButtonLabel()}
         </Button>
+
         {/* Feature [ID: 4] Reiniciar Contagem */}
-        <Button onClick={reset} disabled={isMutating} variant="destructive">
+        <Button onClick={reset} disabled={isMutating} variant="destructive" size="lg">
           Reiniciar
         </Button>
       </div>

@@ -52,8 +52,8 @@ export const useCounter = () => {
   });
 
   return {
-    value: counterState?.current_count_value ?? 1,
-    status: counterState?.status ?? 'paused',
+    value: counterState?.current_count_value ?? 0,
+    status: counterState?.status ?? 'stopped',
     isFinalCount: counterState?.is_final_count ?? false,
     isLoading,
     error,
