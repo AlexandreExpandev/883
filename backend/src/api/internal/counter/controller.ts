@@ -17,7 +17,7 @@ export async function startHandler(req: Request, res: Response, next: NextFuncti
     }
 
     const result = await counterService.startCounter(userId);
-    res.json(successResponse(result));
+    res.json(successResponse(counterService.formatCounterForDisplay(result)));
   } catch (error: any) {
     next(error);
   }
@@ -37,7 +37,7 @@ export async function pauseHandler(req: Request, res: Response, next: NextFuncti
     }
 
     const result = await counterService.pauseCounter(userId);
-    res.json(successResponse(result));
+    res.json(successResponse(counterService.formatCounterForDisplay(result)));
   } catch (error: any) {
     next(error);
   }
@@ -57,7 +57,7 @@ export async function resetHandler(req: Request, res: Response, next: NextFuncti
     }
 
     const result = await counterService.resetCounter(userId);
-    res.json(successResponse(result));
+    res.json(successResponse(counterService.formatCounterForDisplay(result)));
   } catch (error: any) {
     next(error);
   }
@@ -81,7 +81,7 @@ export async function getCurrentHandler(
     }
 
     const result = await counterService.getCurrentCounter(userId);
-    res.json(successResponse(result));
+    res.json(successResponse(counterService.formatCounterForDisplay(result)));
   } catch (error: any) {
     next(error);
   }

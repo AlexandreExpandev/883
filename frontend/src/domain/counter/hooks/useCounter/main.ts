@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { counterService } from '../../services/counterService';
 import { useAuth } from '@/core/contexts/auth';
+import { CounterState } from '../../types';
 
 const COUNTER_QUERY_KEY = ['counter'];
 
@@ -19,14 +20,14 @@ export const useCounter = () => {
     data: counterState,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<CounterState>({
     queryKey: COUNTER_QUERY_KEY,
     queryFn: counterService.getCurrent,
     enabled: isAuthenticated, // Only fetch if the user is authenticated
   });
 
   const mutationOptions = {
-    onSuccess: (data: any) => {
+    onSuccess: (data: CounterState) => {
       queryClient.setQueryData(COUNTER_QUERY_KEY, data);
     },
     onError: (error: any) => {
@@ -53,6 +54,7 @@ export const useCounter = () => {
   return {
     value: counterState?.value ?? 0,
     status: counterState?.status ?? 'paused',
+    isFinalCount: counterState?.is_final_count ?? false,
     isLoading,
     error,
     start: () => startMutation.mutate(),

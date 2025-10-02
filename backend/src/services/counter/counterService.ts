@@ -1,7 +1,23 @@
-import { CounterStatus, CounterState } from './counterTypes';
+import { CounterStatus, CounterState, CounterDisplay } from './counterTypes';
+import { socketService } from '../../instances/socket';
 
 // In-memory storage for counters (in a real app, this would be a database)
 const counters = new Map<number, CounterState>();
+
+/**
+ * @summary
+ * Formats the counter state for client display
+ *
+ * @param state - Counter state
+ * @returns Formatted counter display
+ */
+export function formatCounterForDisplay(state: CounterState): CounterDisplay {
+  return {
+    current_count_value: state.currentValue,
+    status: state.status.toLowerCase(),
+    is_final_count: state.isCompleted && state.currentValue === 10,
+  };
+}
 
 /**
  * @summary
@@ -32,6 +48,10 @@ export async function startCounter(userId: number): Promise<CounterState> {
   }
 
   counters.set(userId, counter);
+
+  // Notify clients about the counter update
+  socketService.emitCounterUpdate(userId, formatCounterForDisplay(counter));
+
   return counter;
 }
 
@@ -52,6 +72,9 @@ export async function pauseCounter(userId: number): Promise<CounterState> {
   counter.status = CounterStatus.PAUSED;
   counters.set(userId, counter);
 
+  // Notify clients about the counter update
+  socketService.emitCounterUpdate(userId, formatCounterForDisplay(counter));
+
   return counter;
 }
 
@@ -70,6 +93,10 @@ export async function resetCounter(userId: number): Promise<CounterState> {
   };
 
   counters.set(userId, counter);
+
+  // Notify clients about the counter update
+  socketService.emitCounterUpdate(userId, formatCounterForDisplay(counter));
+
   return counter;
 }
 
@@ -85,11 +112,12 @@ export async function getCurrentCounter(userId: number): Promise<CounterState> {
 
   if (!counter) {
     // Return default state if counter doesn't exist
-    return {
+    const defaultState = {
       currentValue: 1,
       status: CounterStatus.PAUSED,
       isCompleted: false,
     };
+    return defaultState;
   }
 
   // If counter is running, increment it
@@ -104,6 +132,9 @@ export async function getCurrentCounter(userId: number): Promise<CounterState> {
     }
 
     counters.set(userId, counter);
+
+    // Notify clients about the counter update
+    socketService.emitCounterUpdate(userId, formatCounterForDisplay(counter));
   }
 
   return counter;
