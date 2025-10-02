@@ -13,7 +13,7 @@ export const HomePage = () => {
   const { value, status, isFinalCount, isLoading, isMutating, start, pause, reset } = useCounter();
 
   const isRunning = status === 'running';
-  const isFinished = status === 'finished';
+  const isFinished = isFinalCount;
 
   return (
     <div className="container mx-auto p-4 text-center">

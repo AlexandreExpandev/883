@@ -1,4 +1,4 @@
-import type { LoginCredentials } from '@/domain/auth/types';
+import { LoginCredentials } from '@/domain/auth/types';
 
 export interface User {
   id: number;
