@@ -52,7 +52,7 @@ export const useCounter = () => {
   });
 
   return {
-    value: counterState?.value ?? 0,
+    value: counterState?.current_count_value ?? 1,
     status: counterState?.status ?? 'paused',
     isFinalCount: counterState?.is_final_count ?? false,
     isLoading,

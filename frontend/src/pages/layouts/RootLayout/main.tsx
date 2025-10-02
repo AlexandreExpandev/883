@@ -22,7 +22,7 @@ export const RootLayout = () => {
             Contador App
           </Link>
           {isAuthenticated && (
-            <Button onClick={handleLogout} variant="outline" size="sm">
+            <Button onClick={handleLogout} variant="outline">
               Logout
             </Button>
           )}

@@ -1,4 +1,4 @@
-import { LoginCredentials } from '@/domain/auth/types';
+import type { LoginCredentials } from '@/domain/auth/types';
 
 export interface User {
   id: number;
@@ -14,4 +14,4 @@ export interface AuthContextValue {
   logout: () => void;
 }
 
-export { LoginCredentials };
+export type { LoginCredentials };

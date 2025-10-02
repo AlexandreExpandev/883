@@ -1,5 +1,6 @@
 export interface CounterState {
-  value: number;
-  status: 'running' | 'paused' | 'finished';
-  is_final_count?: boolean;
+  current_count_value: number;
+  status: string;
+  is_final_count: boolean;
+  value?: number; // For compatibility with existing code
 }

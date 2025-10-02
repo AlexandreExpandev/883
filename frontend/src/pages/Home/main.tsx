@@ -33,7 +33,7 @@ export const HomePage = () => {
       </div>
       <div className="space-x-4">
         {/* Feature [ID: 1] Iniciar Contagem */}
-        <Button onClick={start} disabled={isRunning || isFinished || isMutating} size="lg">
+        <Button onClick={start} disabled={isRunning || isFinished || isMutating}>
           {status === 'paused' && value > 0 && value < 10 ? 'Continuar' : 'Iniciar'}
         </Button>
         {/* Feature [ID: 3] Pausar Contagem */}
@@ -41,12 +41,11 @@ export const HomePage = () => {
           onClick={pause}
           disabled={!isRunning || isFinished || isMutating}
           variant="secondary"
-          size="lg"
         >
           Pausar
         </Button>
         {/* Feature [ID: 4] Reiniciar Contagem */}
-        <Button onClick={reset} disabled={isMutating} variant="destructive" size="lg">
+        <Button onClick={reset} disabled={isMutating} variant="destructive">
           Reiniciar
         </Button>
       </div>
